@@ -5,15 +5,19 @@ using namespace std;
 struct GuessWord
 {
 public:
-	GuessWord(string inWord,ColorCobmo (& inColorCombos)[5]) 
+	GuessWord()
+	{
+		word = "";
+	}
+	GuessWord(string inWord, BackgroundColor inColors[5])
 	{
 		word = inWord;
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < sizeof(inColors) / sizeof(*inColors); i++)
 		{
-			letterColors[i] = inColorCombos[i];
+			letterColors[i] = inColors[i];
 		}
 	}
 	string word;
-	ColorCobmo letterColors[5];
+	BackgroundColor letterColors[5];
 
 };
