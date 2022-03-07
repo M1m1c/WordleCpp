@@ -6,6 +6,8 @@ using namespace std;
 using std::ifstream;
 #include "Wordle.h"
 #include "Color.h"
+#include "ColorCombo.h"
+#include "GuessWord.cpp"
 
 int main()
 {
@@ -14,11 +16,6 @@ int main()
 	if (!inWords) { return 1; }
 	cout << FOREGROUND(ForegroundColor::BrightRed, "Hello world!") << endl;
 	cout << BACKGROUND(BackgroundColor::BrightRed, "Hello world!") << endl;
-
-	/*while (getline(inWords, text))
-	{
-		cout << text << "\n";
-	}*/
 
 	int letterLimit = 5;
 	string line;
@@ -32,9 +29,13 @@ int main()
 		lines.push_back(line);
 	}
 
-	int random_number = rand() % linesNum;
-	//cout << lines[random_number] << "\n";
-	auto targetWord = lines[random_number];
+	int randomNumber = rand() % linesNum;
+
+	auto targetWord = lines[randomNumber];
+	//cout << targetWord << "\n";
+
+	vector<GuessWord> guessWords;
+
 
 	bool gameIsActive = true;
 	while (gameIsActive)
@@ -43,10 +44,23 @@ int main()
 		cout << "WORDLE\n";
 		for (int i = 0; i < 6; i++)
 		{
-			for (int g = 0; g < 5; g++)
+			if (guessWords.size() > 0 && guessWords.size() > i)
 			{
-				cout << "?";
+				GuessWord& current = guessWords[i];
+				for (int g = 0; g < letterLimit; g++)
+				{
+					cout << BACKGROUND(current.letterColors[g], current.word[g]);
+				}
+
 			}
+			else
+			{
+				for (int g = 0; g < 5; g++)
+				{
+					cout << "?";
+				}
+			}
+
 			cout << "\n";
 		}
 		cout << "please type a five letter word:\n";
@@ -55,7 +69,7 @@ int main()
 		if (input.size() != letterLimit)
 		{
 			system("CLS");
-			cout << FOREGROUND(ForegroundColor::BrightYellow,"Your input is not a five letter word! \n");
+			cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a five letter word! \n");
 			continue;
 		}
 
@@ -65,9 +79,39 @@ int main()
 			cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a valid word! \n");
 			continue;
 		}
-		
-		//system("CLS");
-	}	
+
+		GuessWord tempGuessWord;
+		BackgroundColor backColor[5];
+		for (int i = 0; i < letterLimit; i++)
+		{
+			backColor[i] = (BackgroundColor)0;
+			auto inChar = tolower(input[i]);
+			if (inChar == tolower(targetWord[i]))
+			{
+				backColor[i] = BackgroundColor::Green;
+			}
+			else
+			{
+				for (int g = 0; g < letterLimit; g++)
+				{
+					if (inChar == tolower(targetWord[g]))
+					{
+						backColor[i] = BackgroundColor::Yellow;
+					}
+				}
+			}
+		}
+
+		tempGuessWord.word = input;
+
+		for (int i = 0; i < letterLimit; i++)
+		{
+			tempGuessWord.letterColors[i] = backColor[i];
+		}
+		guessWords.push_back(tempGuessWord);
+
+		system("CLS");
+	}
 }
 
 bool IsValidWord(vector<string>& lines, string& input)
