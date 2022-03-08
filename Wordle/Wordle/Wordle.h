@@ -4,6 +4,10 @@ struct GuessWord;
 
 int main();
 
+void CheckPlayAgain(std::string& targetWord, std::ifstream& inWords, std::vector<std::string>& lines, int linesNum);
+
+void CheckGameOver(GuessWord& tempGuessWord, std::string& targetWord);
+
 vector<string> GetWordsInFile(ifstream& inWords, int& linesNum);
 
 string GetTargetWord(ifstream& inWords, vector<string>& lines, int linesNum);
@@ -18,6 +22,8 @@ bool IsValidWord(vector<string>& lines, string& input);
 
 
 int letterLimit = 5;
+int guessLimit = 6;
 bool gameIsActive = true;
+bool gameIsOver = false;
 string input;
 vector<GuessWord> guessWords;

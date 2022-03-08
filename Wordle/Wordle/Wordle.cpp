@@ -18,13 +18,17 @@ int main()
 	vector<string> lines = GetWordsInFile(inWords, linesNum);
 
 	auto targetWord = GetTargetWord(inWords, lines, linesNum);
-	//cout << targetWord << "\n";
 
-	//TODO make check for if won or lost
-	//TODO make check if user wants to play another round
 	while (gameIsActive)
 	{
 		PrintGameState(guessWords);
+
+		if (gameIsOver) 
+		{			
+			CheckPlayAgain(targetWord, inWords, lines, linesNum);
+			system("CLS");
+			continue;
+		}
 
 		cout << "please type a five letter word:\n";
 		cin >> input;
@@ -39,6 +43,45 @@ int main()
 		AddGuessWordToCollection(tempGuessWord, input, backColor, guessWords);
 
 		system("CLS");
+
+		CheckGameOver(tempGuessWord, targetWord);
+	}
+}
+
+void CheckPlayAgain(std::string& targetWord, std::ifstream& inWords, std::vector<std::string>& lines, int linesNum)
+{
+	cout << FOREGROUND(ForegroundColor::BrightYellow, "Would you like to play again y/n\n");
+	cin >> input;
+	if (input.size() > 0)
+	{
+		if (tolower(input[0]) == 'y')
+		{
+			gameIsOver = false;
+			guessWords.clear();
+			targetWord = GetTargetWord(inWords, lines, linesNum);
+		}
+		else if (tolower(input[0]) == 'n')
+		{
+			gameIsActive = false;
+		}
+	}
+}
+
+void CheckGameOver(GuessWord& tempGuessWord, std::string& targetWord)
+{
+	if (stringToLower(tempGuessWord.word) == stringToLower(targetWord))
+	{
+		cout
+			<< FOREGROUND(ForegroundColor::BrightGreen, "Congratulations you guessed correctly, the word was: ")
+			<< FOREGROUND(ForegroundColor::BrightGreen, targetWord) << "\n";
+		gameIsOver = true;
+	}
+	else if (guessWords.size() == guessLimit)
+	{
+		cout
+			<< FOREGROUND(ForegroundColor::BrightYellow, "GAME OVER, the correct word was: ")
+			<< FOREGROUND(ForegroundColor::BrightYellow, targetWord) << "\n";
+		gameIsOver = true;
 	}
 }
 
@@ -70,7 +113,7 @@ string GetTargetWord(ifstream& inWords, vector<string>& lines, int linesNum)
 void PrintGameState(vector<GuessWord>& guessWords)
 {
 	cout << "WORDLE\n";
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < guessLimit; i++)
 	{
 		if (guessWords.size() > 0 && guessWords.size() > i)
 		{
@@ -82,7 +125,7 @@ void PrintGameState(vector<GuessWord>& guessWords)
 		}
 		else
 		{
-			for (int g = 0; g < 5; g++)
+			for (int g = 0; g < letterLimit; g++)
 			{
 				cout << "?";
 			}
@@ -126,7 +169,7 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 {
 	for (int i = 0; i < letterLimit; i++)
 	{
-		backColor[i] = (BackgroundColor)0;
+		backColor[i] = BackgroundColor::None;
 		auto inChar = tolower(input[i]);
 		if (inChar == tolower(targetWord[i]))
 		{
