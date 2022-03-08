@@ -4,9 +4,10 @@
 #include <vector>
 using namespace std;
 using std::ifstream;
-#include "Wordle.h"
 #include "Color.h"
+#include "StringUtility.h";
 #include "GuessWord.cpp"
+#include "Wordle.h"
 
 int main()
 {
@@ -17,7 +18,7 @@ int main()
 	int linesNum = 0;
 	vector<string> lines = GetWordsInFile(inWords, linesNum);
 
-	auto targetWord = GetTargetWord(inWords, lines, linesNum);
+	auto randWord = GetRandomWord(inWords, lines, linesNum);
 
 	while (gameIsActive)
 	{
@@ -25,7 +26,7 @@ int main()
 
 		if (gameIsOver) 
 		{			
-			CheckPlayAgain(targetWord, inWords, lines, linesNum);
+			CheckPlayAgain(randWord, inWords, lines, linesNum);
 			system("CLS");
 			continue;
 		}
@@ -38,17 +39,17 @@ int main()
 		GuessWord tempGuessWord;
 		BackgroundColor backColor[5];
 
-		ColorMatchingLetters(backColor, input, targetWord);
+		ColorMatchingLetters(backColor, input, randWord);
 
 		AddGuessWordToCollection(tempGuessWord, input, backColor, guessWords);
 
 		system("CLS");
 
-		CheckGameOver(tempGuessWord, targetWord);
+		CheckGameOver(tempGuessWord, randWord);
 	}
 }
 
-void CheckPlayAgain(std::string& targetWord, std::ifstream& inWords, std::vector<std::string>& lines, int linesNum)
+void CheckPlayAgain(string& randWord, ifstream& inWords, vector<string>& lines, int linesNum)
 {
 	cout << FOREGROUND(ForegroundColor::BrightYellow, "Would you like to play again y/n\n");
 	cin >> input;
@@ -58,7 +59,7 @@ void CheckPlayAgain(std::string& targetWord, std::ifstream& inWords, std::vector
 		{
 			gameIsOver = false;
 			guessWords.clear();
-			targetWord = GetTargetWord(inWords, lines, linesNum);
+			randWord = GetRandomWord(inWords, lines, linesNum);
 		}
 		else if (tolower(input[0]) == 'n')
 		{
@@ -67,7 +68,7 @@ void CheckPlayAgain(std::string& targetWord, std::ifstream& inWords, std::vector
 	}
 }
 
-void CheckGameOver(GuessWord& tempGuessWord, std::string& targetWord)
+void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 {
 	if (stringToLower(tempGuessWord.word) == stringToLower(targetWord))
 	{
@@ -83,31 +84,6 @@ void CheckGameOver(GuessWord& tempGuessWord, std::string& targetWord)
 			<< FOREGROUND(ForegroundColor::BrightYellow, targetWord) << "\n";
 		gameIsOver = true;
 	}
-}
-
-vector<string> GetWordsInFile(ifstream& inWords, int& linesNum)
-{
-	vector<string> lines;
-	string line;
-
-
-	while (getline(inWords, line))
-	{
-		linesNum++;
-		lines.push_back(line);
-	}
-
-	return lines;
-}
-
-string GetTargetWord(ifstream& inWords, vector<string>& lines, int linesNum)
-{
-	
-
-	srand(time(0));
-	int randomNumber = rand() % linesNum;
-
-	return lines[randomNumber];
 }
 
 void PrintGameState(vector<GuessWord>& guessWords)
@@ -132,26 +108,6 @@ void PrintGameState(vector<GuessWord>& guessWords)
 		}
 		cout << "\n";
 	}
-}
-
-bool IsValidInput(string& input, vector<string>& lines)
-{
-
-	if (input.size() != letterLimit)
-	{
-		system("CLS");
-		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a five letter word! \n");
-		return false;
-	}
-
-	if (!IsValidWord(lines, input))
-	{
-		system("CLS");
-		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a valid word! \n");
-		return false;
-	}
-
-	return true;
 }
 
 void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], std::vector<GuessWord>& guessWords)
@@ -188,29 +144,23 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 	}
 }
 
-bool IsValidWord(vector<string>& lines, string& input)
+bool IsValidInput(string& input, vector<string>& lines)
 {
-	bool isValidWord = false;
-	for (auto var : lines)
-	{
-		auto compLine = stringToLower(var);
-		auto compInput = stringToLower(input);
-		if (compInput == compLine) {
-			isValidWord = true;
-			break;
-		}
-	}
-	return isValidWord;
-}
 
-string stringToLower(string input)
-{
-	string retval;
-
-	for (auto var : input)
+	if (input.size() != letterLimit)
 	{
-		retval += tolower(var);
+		system("CLS");
+		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a five letter word! \n");
+		return false;
 	}
 
-	return retval;
+	if (!IsValidWord(lines, input))
+	{
+		system("CLS");
+		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a valid word! \n");
+		return false;
+	}
+
+	return true;
 }
+
