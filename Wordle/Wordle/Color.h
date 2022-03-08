@@ -3,7 +3,7 @@
 #define BACKGROUND(color, text) "\033[3;42;" << static_cast<int>(color) << "m" << text << "\033[0m"
 
 enum class ForegroundColor : int {
-	Gray=0,
+	None=0,
 	White=1,
 	Red = 31,
 	Green = 32,
@@ -14,7 +14,7 @@ enum class ForegroundColor : int {
 };
 
 enum class BackgroundColor : int {
-	Gray = 0,
+	None = 0,
 	White = 1,
 	Red = 41,
 	Green = 42,
