@@ -1,5 +1,5 @@
 #include <string>
-#include "ColorCombo.h"
+#include "Color.h"
 using namespace std;
 
 struct GuessWord
@@ -12,7 +12,7 @@ public:
 	GuessWord(string inWord, BackgroundColor inColors[5])
 	{
 		word = inWord;
-		for (int i = 0; i < sizeof(inColors) / sizeof(*inColors); i++)
+		for (int i = 0; i < 5; i++)
 		{
 			letterColors[i] = inColors[i];
 		}
