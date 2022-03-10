@@ -4,7 +4,7 @@ struct GuessWord;
 
 int main();
 
-void CheckPlayAgain(string& targetWord, ifstream& inWords, vector<string>& lines, int linesNum);
+void CheckPlayAgain(string& targetWord, ifstream& inWords, HashSet* lines, int linesNum);
 
 void CheckGameOver(GuessWord& tempGuessWord, string& targetWord);
 
@@ -14,7 +14,7 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 
 void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord);
 
-bool IsValidInput(string& input, vector<string>& lines);
+bool IsValidInput(string& input, HashSet* lines);
 
 
 

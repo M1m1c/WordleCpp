@@ -8,7 +8,10 @@ using std::ifstream;
 #include "StringUtility.h";
 #include "GuessWord.cpp"
 #include "Wordle.h"
+#include "HashSet.h"
 
+
+//TODO fix so that duplicates of letters that dont exist in the target word dont get colored
 int main()
 {
 	ifstream inWords;
@@ -16,16 +19,34 @@ int main()
 	if (!inWords) { return 1; }
 
 	int linesNum = 0;
-	vector<string> lines = GetWordsInFile(inWords, linesNum);
+	HashSet* lines = GetWordsInFile(inWords, linesNum);
 
-	auto randWord = GetRandomWord(inWords, lines, linesNum);
+	cout << linesNum;
+	//string temp = "stamp";
+	//string temp2 = "bump";
+	//HashSet* table = HashSet::CreateSet(CAPACITY);// CreateSet(CAPACITY);
+
+	//HashSet::Add(table, &temp);
+	//HashSet::Add(table, &temp2);
+	//auto lemp = HashSet::Find(table , "bump");
+	//if (lemp != NULL)
+	//{
+	//	cout << *lemp << "\n";
+	//}
+
+
+	////char temp[5] = {"stamp"};
+	//const char* str = "stamp";
+	//cout << strlen(str) << "\n";
+
+	string randWord = "BENCH";// GetRandomWord(inWords, lines, linesNum);
 
 	while (gameIsActive)
 	{
 		PrintGameState(guessWords);
 
-		if (gameIsOver) 
-		{			
+		if (gameIsOver)
+		{
 			CheckPlayAgain(randWord, inWords, lines, linesNum);
 			system("CLS");
 			continue;
@@ -49,7 +70,7 @@ int main()
 	}
 }
 
-void CheckPlayAgain(string& randWord, ifstream& inWords, vector<string>& lines, int linesNum)
+void CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int linesNum)
 {
 	cout << FOREGROUND(ForegroundColor::BrightYellow, "Would you like to play again y/n\n");
 	cin >> input;
@@ -110,7 +131,7 @@ void PrintGameState(vector<GuessWord>& guessWords)
 	}
 }
 
-void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], std::vector<GuessWord>& guessWords)
+void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], vector<GuessWord>& guessWords)
 {
 	tempGuessWord.word = input;
 
@@ -144,7 +165,7 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 	}
 }
 
-bool IsValidInput(string& input, vector<string>& lines)
+bool IsValidInput(string& input, HashSet* lines)
 {
 
 	if (input.size() != letterLimit)

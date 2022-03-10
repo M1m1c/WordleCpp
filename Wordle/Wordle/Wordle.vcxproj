@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GuessWord.cpp" />
+    <ClCompile Include="HashSet.cpp" />
     <ClCompile Include="StringUtility.cpp" />
     <ClCompile Include="Wordle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h" />
+    <ClInclude Include="HashSet.h" />
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="Wordle.h" />
   </ItemGroup>

@@ -1,9 +1,11 @@
 #pragma once
 
-bool IsValidWord(vector<string>& lines, string& input);
+struct HashSet;
+
+bool IsValidWord(HashSet* lines, string& input);
 
 string stringToUpper(string input);
 
-string GetRandomWord(ifstream& inWords, vector<string>& lines, int linesNum);
+string GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum);
 
-vector<string> GetWordsInFile(ifstream& inWords, int& linesNum);
+HashSet* GetWordsInFile(ifstream& inWords, int& linesNum);

@@ -2,13 +2,14 @@
 #include <string>
 #include <vector>
 using namespace std;
+#include "HashSet.h"
 #include "StringUtility.h";
 
 
-bool IsValidWord(vector<string>& lines, string& input)
+bool IsValidWord(HashSet* lines, string& input)
 {
 	bool isValidWord = false;
-	for (auto var : lines)
+	/*for (auto var : lines)
 	{
 		auto compLine = stringToUpper(var);
 		auto compInput = stringToUpper(input);
@@ -16,6 +17,12 @@ bool IsValidWord(vector<string>& lines, string& input)
 			isValidWord = true;
 			break;
 		}
+	}*/
+
+	auto tempWord = HashSet::Find(lines, input);
+	if (tempWord != NULL ) 
+	{
+		isValidWord = true;
 	}
 	return isValidWord;
 }
@@ -32,24 +39,25 @@ string stringToUpper(string input)
 	return retval;
 }
 
-string GetRandomWord(ifstream& inWords, vector<string>& lines, int linesNum)
+//TODO this can return null find a way to get a random number that is not null
+string GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum)
 {
 	srand(time(0));
 	int randomNumber = rand() % linesNum;
 
-	return lines[randomNumber];
+	return *lines->items[randomNumber]->key;
 }
 
-vector<string> GetWordsInFile(ifstream& inWords, int& linesNum)
+HashSet* GetWordsInFile(ifstream& inWords, int& linesNum)
 {
-	vector<string> lines;
+	HashSet* lines = HashSet::CreateSet(CAPACITY);
 	string line;
 
 
 	while (getline(inWords, line))
 	{
 		linesNum++;
-		lines.push_back(line);
+		HashSet::Add(lines, &line);
 	}
 
 	return lines;
