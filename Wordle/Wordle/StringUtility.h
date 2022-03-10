@@ -2,7 +2,7 @@
 
 bool IsValidWord(vector<string>& lines, string& input);
 
-string stringToLower(string input);
+string stringToUpper(string input);
 
 string GetRandomWord(ifstream& inWords, vector<string>& lines, int linesNum);
 

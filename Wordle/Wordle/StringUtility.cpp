@@ -10,8 +10,8 @@ bool IsValidWord(vector<string>& lines, string& input)
 	bool isValidWord = false;
 	for (auto var : lines)
 	{
-		auto compLine = stringToLower(var);
-		auto compInput = stringToLower(input);
+		auto compLine = stringToUpper(var);
+		auto compInput = stringToUpper(input);
 		if (compInput == compLine) {
 			isValidWord = true;
 			break;
@@ -20,13 +20,13 @@ bool IsValidWord(vector<string>& lines, string& input)
 	return isValidWord;
 }
 
-string stringToLower(string input)
+string stringToUpper(string input)
 {
 	string retval;
 
 	for (auto var : input)
 	{
-		retval += tolower(var);
+		retval += toupper(var);
 	}
 
 	return retval;

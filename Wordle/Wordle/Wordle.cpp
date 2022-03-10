@@ -55,13 +55,13 @@ void CheckPlayAgain(string& randWord, ifstream& inWords, vector<string>& lines, 
 	cin >> input;
 	if (input.size() > 0)
 	{
-		if (tolower(input[0]) == 'y')
+		if (toupper(input[0]) == 'y')
 		{
 			gameIsOver = false;
 			guessWords.clear();
 			randWord = GetRandomWord(inWords, lines, linesNum);
 		}
-		else if (tolower(input[0]) == 'n')
+		else if (toupper(input[0]) == 'n')
 		{
 			gameIsActive = false;
 		}
@@ -70,7 +70,7 @@ void CheckPlayAgain(string& randWord, ifstream& inWords, vector<string>& lines, 
 
 void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 {
-	if (stringToLower(tempGuessWord.word) == stringToLower(targetWord))
+	if (stringToUpper(tempGuessWord.word) == stringToUpper(targetWord))
 	{
 		cout
 			<< FOREGROUND(ForegroundColor::BrightGreen, "Congratulations you guessed correctly, the word was: ")
@@ -126,8 +126,8 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 	for (int i = 0; i < letterLimit; i++)
 	{
 		backColor[i] = BackgroundColor::None;
-		auto inChar = tolower(input[i]);
-		if (inChar == tolower(targetWord[i]))
+		auto inChar = toupper(input[i]);
+		if (inChar == toupper(targetWord[i]))
 		{
 			backColor[i] = BackgroundColor::Green;
 		}
@@ -135,7 +135,7 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 		{
 			for (int g = 0; g < letterLimit; g++)
 			{
-				if (inChar == tolower(targetWord[g]))
+				if (inChar == toupper(targetWord[g]))
 				{
 					backColor[i] = BackgroundColor::Yellow;
 				}
