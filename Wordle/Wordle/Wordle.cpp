@@ -11,7 +11,6 @@ using std::ifstream;
 #include "HashSet.h"
 
 
-//TODO fix so that duplicates of letters that dont exist in the target word dont get colored
 int main()
 {
 	ifstream inWords;
@@ -25,7 +24,6 @@ int main()
 
 	while (gameIsActive)
 	{
-		//cout << randWord << "\n";
 		PrintGameState(guessWords);
 
 		if (gameIsOver)
@@ -127,10 +125,18 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 
 void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord)
 {
+	int checkLetters[5];
+	int checkedCount = 0;
 	for (int i = 0; i < LetterLimit; i++)
 	{
 		backColor[i] = BackgroundColor::None;
 		auto inChar = toupper(input[i]);
+
+		if (AlreadyCheckedLetter(checkedCount, checkLetters, inChar)) 
+		{
+			continue;
+		}
+
 		if (inChar == toupper(targetWord[i]))
 		{
 			backColor[i] = BackgroundColor::Green;
@@ -145,7 +151,39 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 				}
 			}
 		}
+
+		if (ContainsDuplicates(i, inChar, targetWord) == false)
+		{
+			checkLetters[checkedCount] = inChar;
+			checkedCount++;
+		}
 	}
+}
+
+bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar)
+{
+	bool retval = false;
+	for (int g = 0; g < checkedCount; g++)
+	{
+		if (checkLetters[g] == inChar) {
+			retval = true;
+			break;
+		}
+	}
+	return retval;
+}
+
+bool ContainsDuplicates(int g, int inChar, string& targetWord)
+{
+	bool isDuplicate = false;
+	for (int q = g + 1; q < LetterLimit; q++)
+	{
+		if (inChar == toupper(targetWord[q]))
+		{
+			isDuplicate = true;
+		}
+	}
+	return isDuplicate;
 }
 
 bool IsValidInput(string& input, HashSet* lines)

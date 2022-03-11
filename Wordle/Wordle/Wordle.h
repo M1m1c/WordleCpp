@@ -17,14 +17,13 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 
 void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord);
 
+bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar);
+
+bool ContainsDuplicates(int g, int inChar, string& targetWord);
+
 bool IsValidInput(string& input, HashSet* lines);
 
 
-
-
-
-//int letterLimit = 5;
-//int guessLimit = 6;
 bool gameIsActive = true;
 bool gameIsOver = false;
 string input;
