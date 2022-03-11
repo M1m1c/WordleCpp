@@ -6,20 +6,11 @@ using namespace std;
 #include "StringUtility.h";
 
 
-bool IsValidWord(HashSet* lines, string& input)
+bool StringUtility::IsValidWord(HashSet* lines, string& input)
 {
 	bool isValidWord = false;
-	/*for (auto var : lines)
-	{
-		auto compLine = stringToUpper(var);
-		auto compInput = stringToUpper(input);
-		if (compInput == compLine) {
-			isValidWord = true;
-			break;
-		}
-	}*/
-
-	auto tempWord = HashSet::Find(lines, input);
+	auto upper = stringToUpper(input);
+	auto tempWord = HashSet::Find(lines, &upper);
 	if (tempWord != NULL ) 
 	{
 		isValidWord = true;
@@ -27,7 +18,7 @@ bool IsValidWord(HashSet* lines, string& input)
 	return isValidWord;
 }
 
-string stringToUpper(string input)
+string StringUtility::stringToUpper(string input)
 {
 	string retval;
 
@@ -40,24 +31,24 @@ string stringToUpper(string input)
 }
 
 //TODO this can return null find a way to get a random number that is not null
-string GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum)
+string StringUtility::GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum)
 {
 	srand(time(0));
 	int randomNumber = rand() % linesNum;
-
-	return *lines->items[randomNumber]->key;
+	auto index = lines->indecies[randomNumber];
+	return lines->items[index]->key;
 }
 
-HashSet* GetWordsInFile(ifstream& inWords, int& linesNum)
+HashSet* StringUtility::GetWordsInFile(ifstream& inWords, int& linesNum)
 {
-	HashSet* lines = HashSet::CreateSet(CAPACITY);
+	HashSet* lines = HashSet::CreateSet(Capacity);
 	string line;
 
 
 	while (getline(inWords, line))
 	{
 		linesNum++;
-		HashSet::Add(lines, &line);
+		HashSet::Add(lines, line);
 	}
 
 	return lines;

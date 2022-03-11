@@ -2,10 +2,21 @@
 
 struct HashSet;
 
-bool IsValidWord(HashSet* lines, string& input);
 
-string stringToUpper(string input);
+class StringUtility
+{
+public:
+	StringUtility() {};
 
-string GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum);
+	static bool IsValidWord(HashSet* lines, string& input);
 
-HashSet* GetWordsInFile(ifstream& inWords, int& linesNum);
+	static string stringToUpper(string input);
+
+	static string GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum);
+
+	static HashSet* GetWordsInFile(ifstream& inWords, int& linesNum);
+
+};
+
+
+
