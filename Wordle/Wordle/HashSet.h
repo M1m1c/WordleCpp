@@ -2,44 +2,33 @@
 #include <string>
 using namespace std;
 
-#define CAPACITY 500000 
+#define Capacity 50000000 
+#define DefaultWordCount 8598
 
 
 struct HashItem 
 {
-	string* key;
+	string key;
 };
 
 struct HashSet 
 {
-
-	//TODO also save an expandable array of unsigned long indexes so that we can randomly get one
 	HashItem** items;
 	int size;
 	int count;
-
+	int* indecies;
+	
 public:
 	static HashSet* CreateSet(int size);
 
-	static string* Find(HashSet* table, string key);
+	static string* Find(HashSet* hSet, string* key);
 
-	static void Add(HashSet* table, string* key);
+	static void Add(HashSet* hSet, string key);
 
 private:
-	static HashItem* CreateItem(string* key);
-	static unsigned long HashFunction(string* str);
+	static HashItem* CreateItem(string key);
+	static unsigned long HashFunction(HashSet* hSet,string* str);
 
 	static void FreeItem(HashItem* item);
-	static void FreeTable(HashSet* table);
+	static void FreeHashSet(HashSet* table);
 };
-
-
-
-
-
-
-
-//void HandleConflict(HashSet* table, Hitem* item)
-//{
-//
-//}

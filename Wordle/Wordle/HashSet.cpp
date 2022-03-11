@@ -1,91 +1,98 @@
 #include "HashSet.h"
+#include <iostream>
 
 
 HashSet* HashSet::CreateSet(int size)
 {
-	HashSet* set = (HashSet*)malloc(sizeof(HashSet));
-	set = new (set) HashSet();
-	set->size = size;
-	set->count = 0;
-	set->items = (HashItem**)calloc(set->size, sizeof(HashItem*));
-	for (int i = 0; i < set->size; i++)
-	{
-		set->items[i] = NULL;
-	}
+	HashSet* hSet = (HashSet*)malloc(sizeof(HashSet));
+	hSet = new (hSet) HashSet();
+	hSet->size = size;
+	hSet->count = 0;
+	hSet->items = (HashItem**)calloc(hSet->size, sizeof(HashItem*));
 
-	return set;
+	int* array{ new int[DefaultWordCount] {} };
+	hSet->indecies = array;
+
+	return hSet;
 }
 
-void HashSet::Add(HashSet* table, string* key)
+void HashSet::Add(HashSet* hSet, string key)
 {
 	HashItem* item = CreateItem(key);
 
-	int index = HashFunction(key);
+	int index = HashFunction(hSet, &item->key);
 
-	HashItem* current = table->items[index];
-	if (current == NULL) {
-		if (table->count == table->size) {
-			printf("Insert Error: Hash Table is full\n");
+	HashItem* current = hSet->items[index];
+	if (current == NULL) 
+	{
+		auto tempCount = hSet->count;
+		if (tempCount == hSet->size)
+		{
+			std::cout << "Insert Error: Hash Set is full\n";
 			FreeItem(item);
 			return;
 		}
-		table->items[index] = item;
-		table->count++;
+		hSet->items[index] = item;
+		hSet->indecies[tempCount] = index;
+		hSet->count++;
 	}
-	else 
+	else
 	{
-		//TODO Handle collisions
+		std::cout << "IndexCollision " << key << " with " << current->key << " at " << index;
 	}
 }
 
 
 
-string* HashSet::Find(HashSet* table, string key) {
-	
+string* HashSet::Find(HashSet* hSet, string* key) {
+
 	string* retval = NULL;
 
-	int index = HashFunction(&key);
-	HashItem* item = table->items[index];
+	int index = HashFunction(hSet, key);
+	HashItem* item = hSet->items[index];
 
 	if (item != NULL) {
-		if (*item->key == key)
+		if (item->key == *key)
 		{
-			retval = item->key;
+			retval = &item->key;
 		}
 	}
 	return retval;
 }
 
-HashItem* HashSet::CreateItem(string* key)
+HashItem* HashSet::CreateItem(string key)
 {
 	HashItem* item = (HashItem*)malloc(sizeof(HashItem));
 	item = new (item) HashItem();
 	item->key = key;
-	
+
 	return item;
 }
 
 
-unsigned long HashSet::HashFunction(string* str)
+unsigned long HashSet::HashFunction(HashSet* hSet, string* str)
 {
-	unsigned long retval = hash<string>{}(*str);
-	return retval % CAPACITY;
+	hash<string> hashFunc;
+	unsigned long retval = (unsigned long)abs((int)hashFunc(*str) % Capacity);
+	return  retval;
 }
+
+
 
 void HashSet::FreeItem(HashItem* item)
 {
-	free(item->key);
+	free(&item->key);
 	free(item);
 }
 
-void HashSet::FreeTable(HashSet* table)
+void HashSet::FreeHashSet(HashSet* hSet)
 {
-	for (int i = 0; i < table->size; i++) {
-		HashItem* item = table->items[i];
+	for (int i = 0; i < hSet->size; i++) {
+		HashItem* item = hSet->items[i];
 		if (item == NULL) { continue; }
 		FreeItem(item);
 	}
 
-	free(table->items);
-	free(table);
+	free(hSet->items);
+	free(hSet);
 }
