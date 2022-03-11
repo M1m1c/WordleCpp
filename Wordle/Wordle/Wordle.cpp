@@ -19,30 +19,13 @@ int main()
 	if (!inWords) { return 1; }
 
 	int linesNum = 0;
-	HashSet* lines = GetWordsInFile(inWords, linesNum);
+	HashSet* lines = StringUtility::GetWordsInFile(inWords, linesNum);
 
-	cout << linesNum;
-	//string temp = "stamp";
-	//string temp2 = "bump";
-	//HashSet* table = HashSet::CreateSet(CAPACITY);// CreateSet(CAPACITY);
-
-	//HashSet::Add(table, &temp);
-	//HashSet::Add(table, &temp2);
-	//auto lemp = HashSet::Find(table , "bump");
-	//if (lemp != NULL)
-	//{
-	//	cout << *lemp << "\n";
-	//}
-
-
-	////char temp[5] = {"stamp"};
-	//const char* str = "stamp";
-	//cout << strlen(str) << "\n";
-
-	string randWord = "BENCH";// GetRandomWord(inWords, lines, linesNum);
+	string randWord = StringUtility::GetRandomWord(inWords, lines, linesNum);
 
 	while (gameIsActive)
 	{
+		//cout << randWord << "\n";
 		PrintGameState(guessWords);
 
 		if (gameIsOver)
@@ -76,13 +59,13 @@ void CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int lin
 	cin >> input;
 	if (input.size() > 0)
 	{
-		if (toupper(input[0]) == 'y')
+		if (toupper(input[0]) == 'Y')
 		{
 			gameIsOver = false;
 			guessWords.clear();
-			randWord = GetRandomWord(inWords, lines, linesNum);
+			randWord = StringUtility::GetRandomWord(inWords, lines, linesNum);
 		}
-		else if (toupper(input[0]) == 'n')
+		else if (toupper(input[0]) == 'N')
 		{
 			gameIsActive = false;
 		}
@@ -91,14 +74,14 @@ void CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int lin
 
 void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 {
-	if (stringToUpper(tempGuessWord.word) == stringToUpper(targetWord))
+	if (StringUtility::stringToUpper(tempGuessWord.word) == StringUtility::stringToUpper(targetWord))
 	{
 		cout
 			<< FOREGROUND(ForegroundColor::BrightGreen, "Congratulations you guessed correctly, the word was: ")
 			<< FOREGROUND(ForegroundColor::BrightGreen, targetWord) << "\n";
 		gameIsOver = true;
 	}
-	else if (guessWords.size() == guessLimit)
+	else if (guessWords.size() == GuessLimit)
 	{
 		cout
 			<< FOREGROUND(ForegroundColor::BrightYellow, "GAME OVER, the correct word was: ")
@@ -110,19 +93,19 @@ void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 void PrintGameState(vector<GuessWord>& guessWords)
 {
 	cout << "WORDLE\n";
-	for (int i = 0; i < guessLimit; i++)
+	for (int i = 0; i < GuessLimit; i++)
 	{
 		if (guessWords.size() > 0 && guessWords.size() > i)
 		{
 			GuessWord& current = guessWords[i];
-			for (int g = 0; g < letterLimit; g++)
+			for (int g = 0; g < LetterLimit; g++)
 			{
 				cout << BACKGROUND(current.letterColors[g], current.word[g]);
 			}
 		}
 		else
 		{
-			for (int g = 0; g < letterLimit; g++)
+			for (int g = 0; g < LetterLimit; g++)
 			{
 				cout << "?";
 			}
@@ -135,7 +118,7 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 {
 	tempGuessWord.word = input;
 
-	for (int i = 0; i < letterLimit; i++)
+	for (int i = 0; i < LetterLimit; i++)
 	{
 		tempGuessWord.letterColors[i] = backColor[i];
 	}
@@ -144,7 +127,7 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 
 void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord)
 {
-	for (int i = 0; i < letterLimit; i++)
+	for (int i = 0; i < LetterLimit; i++)
 	{
 		backColor[i] = BackgroundColor::None;
 		auto inChar = toupper(input[i]);
@@ -154,7 +137,7 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 		}
 		else
 		{
-			for (int g = 0; g < letterLimit; g++)
+			for (int g = 0; g < LetterLimit; g++)
 			{
 				if (inChar == toupper(targetWord[g]))
 				{
@@ -168,14 +151,14 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 bool IsValidInput(string& input, HashSet* lines)
 {
 
-	if (input.size() != letterLimit)
+	if (input.size() != LetterLimit)
 	{
 		system("CLS");
 		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a five letter word! \n");
 		return false;
 	}
 
-	if (!IsValidWord(lines, input))
+	if (!StringUtility::IsValidWord(lines, input))
 	{
 		system("CLS");
 		cout << FOREGROUND(ForegroundColor::BrightYellow, "Your input is not a valid word! \n");

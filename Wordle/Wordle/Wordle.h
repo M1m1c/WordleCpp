@@ -2,6 +2,9 @@
 enum class BackgroundColor;
 struct GuessWord;
 
+#define LetterLimit 5 
+#define GuessLimit 6 
+
 int main();
 
 void CheckPlayAgain(string& targetWord, ifstream& inWords, HashSet* lines, int linesNum);
@@ -20,8 +23,8 @@ bool IsValidInput(string& input, HashSet* lines);
 
 
 
-int letterLimit = 5;
-int guessLimit = 6;
+//int letterLimit = 5;
+//int guessLimit = 6;
 bool gameIsActive = true;
 bool gameIsOver = false;
 string input;
