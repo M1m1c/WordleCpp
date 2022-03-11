@@ -23,7 +23,7 @@ void HashSet::Add(HashSet* hSet, string key)
 	int index = HashFunction(hSet, &item->key);
 
 	HashItem* current = hSet->items[index];
-	if (current == NULL) 
+	if (current == NULL)
 	{
 		auto tempCount = hSet->count;
 		if (tempCount == hSet->size)
@@ -33,16 +33,15 @@ void HashSet::Add(HashSet* hSet, string key)
 			return;
 		}
 		hSet->items[index] = item;
+		//std::cout << "Added " << key << " at " << index << "\n";
 		hSet->indecies[tempCount] = index;
 		hSet->count++;
 	}
 	else
 	{
-		std::cout << "IndexCollision " << key << " with " << current->key << " at " << index;
+		std::cout << "IndexCollision " << key << " with " << current->key << " at " << index << "\n";
 	}
 }
-
-
 
 string* HashSet::Find(HashSet* hSet, string* key) {
 
@@ -69,15 +68,12 @@ HashItem* HashSet::CreateItem(string key)
 	return item;
 }
 
-
 unsigned long HashSet::HashFunction(HashSet* hSet, string* str)
 {
 	hash<string> hashFunc;
-	unsigned long retval = (unsigned long)abs((int)hashFunc(*str) % Capacity);
+	unsigned long retval = (unsigned long)hashFunc(*str) % Capacity;
 	return  retval;
 }
-
-
 
 void HashSet::FreeItem(HashItem* item)
 {

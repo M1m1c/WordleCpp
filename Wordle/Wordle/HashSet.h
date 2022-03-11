@@ -3,8 +3,7 @@
 using namespace std;
 
 #define Capacity 50000000 
-#define DefaultWordCount 8598
-
+#define DefaultWordCount 8597
 
 struct HashItem 
 {
