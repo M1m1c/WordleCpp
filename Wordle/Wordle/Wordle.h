@@ -7,24 +7,33 @@ struct GuessWord;
 
 int main();
 
-void CheckPlayAgain(string& targetWord, ifstream& inWords, HashSet* lines, int linesNum);
+class Wordle
+{
+public:
+	Wordle(){};
+	void RunGame();
 
-void CheckGameOver(GuessWord& tempGuessWord, string& targetWord);
+private:
 
-void PrintGameState(vector<GuessWord>& guessWords);
+	void CheckPlayAgain(string& targetWord, ifstream& inWords, HashSet* lines, int linesNum);
 
-void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], vector<GuessWord>& guessWords);
+	void CheckGameOver(GuessWord& tempGuessWord, string& targetWord);
 
-void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord);
+	void PrintGameState(vector<GuessWord>& guessWords);
 
-bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar);
+	void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], vector<GuessWord>& guessWords);
 
-bool ContainsDuplicates(int g, int inChar, string& targetWord);
+	void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord);
 
-bool IsValidInput(string& input, HashSet* lines);
+	bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar);
+
+	bool ContainsDuplicates(int g, int inChar, string& targetWord);
+
+	bool IsValidInput(string& input, HashSet* lines);
 
 
-bool gameIsActive = true;
-bool gameIsOver = false;
-string input;
-vector<GuessWord> guessWords;
+	bool gameIsActive = true;
+	bool gameIsOver = false;
+	string input;
+	vector<GuessWord> guessWords;
+};

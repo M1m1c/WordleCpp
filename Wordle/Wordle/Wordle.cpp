@@ -13,9 +13,15 @@ using std::ifstream;
 
 int main()
 {
+	Wordle game;
+	game.RunGame();
+}
+
+void Wordle::RunGame()
+{
 	ifstream inWords;
 	inWords.open("words.txt");
-	if (!inWords) { return 1; }
+	if (!inWords) { return; }
 
 	int linesNum = 0;
 	HashSet* lines = StringUtility::GetWordsInFile(inWords, linesNum);
@@ -51,7 +57,7 @@ int main()
 	}
 }
 
-void CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int linesNum)
+void Wordle::CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int linesNum)
 {
 	cout << FOREGROUND(ForegroundColor::BrightYellow, "Would you like to play again y/n\n");
 	cin >> input;
@@ -70,7 +76,7 @@ void CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines, int lin
 	}
 }
 
-void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
+void Wordle::CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 {
 	if (StringUtility::stringToUpper(tempGuessWord.word) == StringUtility::stringToUpper(targetWord))
 	{
@@ -88,7 +94,7 @@ void CheckGameOver(GuessWord& tempGuessWord, string& targetWord)
 	}
 }
 
-void PrintGameState(vector<GuessWord>& guessWords)
+void Wordle::PrintGameState(vector<GuessWord>& guessWords)
 {
 	cout << "WORDLE\n";
 	for (int i = 0; i < GuessLimit; i++)
@@ -112,7 +118,7 @@ void PrintGameState(vector<GuessWord>& guessWords)
 	}
 }
 
-void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], vector<GuessWord>& guessWords)
+void Wordle::AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, BackgroundColor  backColor[5], vector<GuessWord>& guessWords)
 {
 	tempGuessWord.word = input;
 
@@ -123,7 +129,7 @@ void AddGuessWordToCollection(GuessWord& tempGuessWord, string& input, Backgroun
 	guessWords.push_back(tempGuessWord);
 }
 
-void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord)
+void Wordle::ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& targetWord)
 {
 	int checkLetters[5];
 	int checkedCount = 0;
@@ -160,7 +166,7 @@ void ColorMatchingLetters(BackgroundColor  backColor[5], string& input, string& 
 	}
 }
 
-bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar)
+bool Wordle::AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar)
 {
 	bool retval = false;
 	for (int g = 0; g < checkedCount; g++)
@@ -173,7 +179,7 @@ bool AlreadyCheckedLetter(int checkedCount, int* checkLetters, int inChar)
 	return retval;
 }
 
-bool ContainsDuplicates(int g, int inChar, string& targetWord)
+bool Wordle::ContainsDuplicates(int g, int inChar, string& targetWord)
 {
 	bool isDuplicate = false;
 	for (int q = g + 1; q < LetterLimit; q++)
@@ -186,7 +192,7 @@ bool ContainsDuplicates(int g, int inChar, string& targetWord)
 	return isDuplicate;
 }
 
-bool IsValidInput(string& input, HashSet* lines)
+bool Wordle::IsValidInput(string& input, HashSet* lines)
 {
 
 	if (input.size() != LetterLimit)
