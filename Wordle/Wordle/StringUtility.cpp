@@ -30,7 +30,6 @@ string StringUtility::stringToUpper(string input)
 	return retval;
 }
 
-//TODO this can return null find a way to get a random number that is not null
 string StringUtility::GetRandomWord(ifstream& inWords, HashSet* lines, int linesNum)
 {
 	srand(time(0));

@@ -33,7 +33,6 @@ void HashSet::Add(HashSet* hSet, string key)
 			return;
 		}
 		hSet->items[index] = item;
-		//std::cout << "Added " << key << " at " << index << "\n";
 		hSet->indecies[tempCount] = index;
 		hSet->count++;
 	}
