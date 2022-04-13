@@ -4,8 +4,8 @@
 
 HashSet* HashSet::CreateSet(int size)
 {
-	HashSet* hSet = (HashSet*)malloc(sizeof(HashSet));
-	hSet = new (hSet) HashSet();
+	HashSet* hSet = (HashSet*)malloc(sizeof(HashSet)); // feedback: see my comment about memory releasing in Wordle.cpp
+	hSet = new (hSet) HashSet(); // feedback: same applies for this allocation as well.
 	hSet->size = size;
 	hSet->count = 0;
 	hSet->items = (HashItem**)calloc(hSet->size, sizeof(HashItem*));
@@ -58,7 +58,7 @@ string* HashSet::Find(HashSet* hSet, string* key) {
 	return retval;
 }
 
-HashItem* HashSet::CreateItem(string key)
+HashItem* HashSet::CreateItem(string key) // feedback: argument here could be a string ref
 {
 	HashItem* item = (HashItem*)malloc(sizeof(HashItem));
 	item = new (item) HashItem();
@@ -67,7 +67,7 @@ HashItem* HashSet::CreateItem(string key)
 	return item;
 }
 
-unsigned long HashSet::HashFunction(HashSet* hSet, string* str)
+unsigned long HashSet::HashFunction(HashSet* hSet, string* str) // feedback: doesn't seem like HashSet argument is used here?
 {
 	hash<string> hashFunc;
 	unsigned long retval = (unsigned long)hashFunc(*str) % Capacity;

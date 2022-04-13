@@ -10,7 +10,9 @@ bool StringUtility::IsValidWord(HashSet* lines, string& input)
 {
 	bool isValidWord = false;
 	auto upper = stringToUpper(input);
-	auto tempWord = HashSet::Find(lines, &upper);
+	auto tempWord = HashSet::Find(lines, &upper); //feedback: static-style function call looks interesting. I couldn't see any particular reason for it, considering
+												 // you already have an instance of HashSet available. Nothing wrong with it either, just something that I find unusual.
+												 // Personally I'd just make Find function "normal" and call those in this way: lines->Find(&upper)
 	if (tempWord != NULL ) 
 	{
 		isValidWord = true;
