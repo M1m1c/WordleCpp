@@ -24,7 +24,8 @@ void Wordle::RunGame()
 	if (!inWords) { return; }
 
 	int linesNum = 0;
-	HashSet* lines = StringUtility::GetWordsInFile(inWords, linesNum);
+	HashSet* lines = StringUtility::GetWordsInFile(inWords, linesNum); //feedback: seems like there is an allocation made inside this call. But I couldn't find
+																		// code that realeases allocated memory. This looks like a leak. 
 
 	string randWord = StringUtility::GetRandomWord(inWords, lines, linesNum);
 
@@ -67,7 +68,8 @@ void Wordle::CheckPlayAgain(string& randWord, ifstream& inWords, HashSet* lines,
 		{
 			gameIsOver = false;
 			guessWords.clear();
-			randWord = StringUtility::GetRandomWord(inWords, lines, linesNum);
+			randWord = StringUtility::GetRandomWord(inWords, lines, linesNum); // feedback: would be more clean to leave this function handle only input to play again
+																				// and get the random word elsewhere.
 		}
 		else if (toupper(input[0]) == 'N')
 		{

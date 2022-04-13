@@ -18,6 +18,8 @@ struct HashSet
 	int* indecies;
 	
 public:
+	// feedback: I'm curious about the reason for making these functions static...
+	// See my comment in StringUtility.cpp. I've seen this style before, mostly from people coming from C# background :)
 	static HashSet* CreateSet(int size);
 
 	static string* Find(HashSet* hSet, string* key);
